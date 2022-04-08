@@ -1,0 +1,20 @@
+[
+  {
+      "category": "Chairs",
+      "name": "Red chair",
+      "short_desc": "simple red chair",
+      "image": "products_images/controll2.jpg",
+      "description": "description of simple red chair",
+      "price": "1000.00",
+      "quantity": 10
+    },
+  {
+      "category": "Sofa",
+      "name": "white sofa",
+      "short_desc": "",
+      "image": "products_images/product-3-sm.jpg",
+      "description": "",
+      "price": "15600.00",
+      "quantity": 4
+  }
+]
