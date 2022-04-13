@@ -1,9 +1,16 @@
+import json
+import os
 import random
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
+
+
+def load_from_json(file_name):
+    with open(os.path.join('JSON_PATH', file_name + '.json'), 'r') as infile:
+        return json.load(infile)
 
 
 def get_basket(user):
@@ -24,19 +31,35 @@ def get_same_products(hot_product):
     return same_products
 
 
+def main(request):
+    title = 'главная'
+    products = Product.objects.all()[:3]
+
+    context = {
+        'title': title,
+        'products': products,
+        # 'basket': get_basket(request.user),
+    }
+
+    return render(request, 'mainapp/index.html', context)
+
+
 def products(request, pk=None, page=1):
     title = 'продукты'
 
     links_menu = ProductCategory.objects.all()
-    basket = get_basket(request.user)
+    # basket = get_basket(request.user)
 
     hot_product = get_hot_product()
     same_products = get_same_products(hot_product)
 
-    if pk is not None:
-        if pk == 0:
-            products = Product.objects.all().order_by('price')
-            category = {'name': 'все'}
+    if pk:
+        if pk == '0':
+            category = {
+                'pk': 0,
+                'name': 'все'
+            }
+            products = Product.objects.all()
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
             products = Product.objects.filter(category__pk=pk).order_by('price')
@@ -56,7 +79,7 @@ def products(request, pk=None, page=1):
             'related_products': same_products,
             'products': products_paginator,
             'hot_product': hot_product,
-            'basket': basket
+            # 'basket': basket
         }
         return render(request, 'mainapp/products.html', context)
 
@@ -68,7 +91,7 @@ def products(request, pk=None, page=1):
         'related_products': same_products,
         'products': products,
         'hot_product': hot_product,
-        'basket': basket
+        # 'basket': basket
     }
     return render(request, 'mainapp/products.html', context)
 
@@ -76,7 +99,7 @@ def products(request, pk=None, page=1):
 def product(request, pk):
     title = 'продукты'
     link_menu = ProductCategory.objects.all()
-    basket = get_basket(request.user)
+    # basket = get_basket(request.user)
     product = get_object_or_404(Product, pk=pk)
     same_products = get_same_products(product)
 
@@ -84,7 +107,21 @@ def product(request, pk):
         'title': title,
         'links_menu': link_menu,
         'related_products': same_products,
-        'basket': basket,
+        # 'basket': basket,
         'product': product,
     }
     return render(request, 'mainapp/product.html', context)
+
+
+def contact(request):
+    title = 'о нас'
+
+    locations = load_from_json('contact__locations')
+
+    context = {
+        'title': title,
+        'locations': locations,
+        # 'basket': get_basket(request.user),
+    }
+
+    return render(request, 'mainapp/contact.html', context)

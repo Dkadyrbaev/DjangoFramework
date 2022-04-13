@@ -1,3 +1,6 @@
+from django.conf import settings
+from django.core.mail import send_mail
+from authapp.models import ShopUser
 from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -38,11 +41,19 @@ def logout(request):
 def register(request):
     title = 'регистрация'
 
+    def send_verify_link(user):
+        verify_link = reverse('auth:verify', args=[user.email, user.activation_key])
+        subject = f'Для активации пользователя {user.username} пройдите по ссылке'
+        message = f'для подтверждения учетной записи {user.username} на портаде\n' \
+                  f'{settings.DOMAIN_NAME} пройдите по ссылке {settings.DOMAIN_NAME}{verify_link}'
+        return send_mail(subject, message, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+
     if request.method == 'POST':
         register_form = ShopUserRegisterForm(request.POST, request.FILES)
-        if register_form.is_valid():
-            register_form.save()
 
+        if register_form.is_valid():
+            user = register_form.save()
+            send_verify_link(user)
             return HttpResponseRedirect(reverse('auth:login'))
     else:
         register_form = ShopUserRegisterForm()
@@ -51,7 +62,24 @@ def register(request):
         'title': title,
         'register_form': register_form
     }
+
     return render(request, 'authapp/register.html', context)
+
+
+def verify(request, email, activate_key):
+    try:
+        user = ShopUser.objects.get(email=email)
+        if user and user.activation_key == activate_key and not user.is_activation_key_expired:
+            user.activation_key = ''
+            user.activation_key_expires = None
+            user.is_active = True
+            user.save(update_fields=['activation_key', 'activation_key_expires', 'is_active'])
+            auth.login(request, user)
+            return render(request, 'authapp/verification.html')
+    except Exception as e:
+        pass
+    else:
+        return HttpResponseRedirect(reverse('index'))
 
 
 def edit(request):
