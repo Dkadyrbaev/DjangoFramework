@@ -3,7 +3,7 @@ import random
 
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserChangeForm, UserCreationForm
-from .models import ShopUser
+from .models import ShopUser, ShopUserProfile
 
 
 class ShopUserLoginForm(AuthenticationForm):
@@ -30,7 +30,7 @@ class ShopUserRegisterForm(UserCreationForm):
 
     def clean_age(self):
         data = self.cleaned_data['age']
-        if data < 18:
+        if data < 118:
             raise forms.ValidationError("Вы слишком молоды")
 
         return data
@@ -57,7 +57,13 @@ class ShopUserEditForm(UserChangeForm):
 
     def clean_age(self):
         data = self.cleaned_data['age']
-        if data < 18:
+        if data < 118:
             raise forms.ValidationError("Вы слишком молоды")
 
         return data
+
+
+class ShopUserProfileEditForm(forms.ModelForm):
+    class Meta:
+        model = ShopUserProfile
+        fields = ('about', 'gender')

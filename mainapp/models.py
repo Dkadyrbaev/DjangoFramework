@@ -11,15 +11,25 @@ class ProductCategory(models.Model):
         verbose_name='описание',
         blank=True,
     )
+    short_desc = models.CharField(
+        verbose_name='краткое описание',
+        max_length=60,
+        blank=True,
+    )
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    is_active = models.BooleanField(
+        verbose_name='активна',
+        default=True,
+    )
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = 'Category'
+        verbose_name = 'category'
         verbose_name_plural = 'categories'
 
 
@@ -57,11 +67,15 @@ class Product(models.Model):
         default=0,
     )
 
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(
+        verbose_name='активна',
+        default=True,
+    )
 
     def __str__(self):
         return f'{self.name} - {self.pk}'
 
     class Meta:
+        # ordering = ['-updated']
         verbose_name = 'Product'
         verbose_name_plural = 'Products'

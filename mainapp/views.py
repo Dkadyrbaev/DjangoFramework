@@ -45,24 +45,23 @@ def main(request):
 
 
 def products(request, pk=None, page=1):
-    title = 'продукты'
+    title = 'Каталог'
 
     links_menu = ProductCategory.objects.all()
-    # basket = get_basket(request.user)
 
-    hot_product = get_hot_product()
-    same_products = get_same_products(hot_product)
-
-    if pk:
-        if pk == '0':
-            category = {
-                'pk': 0,
-                'name': 'все'
-            }
-            products = Product.objects.all()
+    if pk is not None:
+        if pk == 0:
+            category = {'pk': 0, 'name': 'все'}
+            products = Product.objects.filter(is_active=True, category__is_active=True, quantity__gte=1).order_by(
+                'price')
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products = Product.objects.filter(category__pk=pk).order_by('price')
+            products = Product.objects.filter(
+                category__pk=pk,
+                is_active=True,
+                category__is_active=True,
+                quantity__gte=1,
+            ).order_by('price')
 
         paginator = Paginator(products, 2)
         try:
@@ -76,39 +75,35 @@ def products(request, pk=None, page=1):
             'title': title,
             'links_menu': links_menu,
             'category': category,
-            'related_products': same_products,
             'products': products_paginator,
-            'hot_product': hot_product,
-            # 'basket': basket
         }
         return render(request, 'mainapp/products.html', context)
 
-    products = Product.objects.all().order_by('price')
+    hot_product = get_hot_product()
+    same_products = get_same_products(hot_product)
+    products = Product.objects.filter(is_active=True, category__is_active=True, quantity__gte=1).order_by('price')
 
     context = {
         'title': title,
         'links_menu': links_menu,
-        'related_products': same_products,
-        'products': products,
         'hot_product': hot_product,
-        # 'basket': basket
+        'same_products': same_products,
+        'products': products,
     }
+
     return render(request, 'mainapp/products.html', context)
 
 
 def product(request, pk):
-    title = 'продукты'
-    link_menu = ProductCategory.objects.all()
-    # basket = get_basket(request.user)
+    title = 'Детали'
+
     product = get_object_or_404(Product, pk=pk)
-    same_products = get_same_products(product)
 
     context = {
         'title': title,
-        'links_menu': link_menu,
-        'related_products': same_products,
-        # 'basket': basket,
+        'links_menu': ProductCategory.objects.all(),
         'product': product,
+        'same_products': get_same_products(product),
     }
     return render(request, 'mainapp/product.html', context)
 

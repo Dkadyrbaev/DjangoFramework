@@ -17,8 +17,7 @@ class ProductEditForm(ModelForm):
             field.widget.attrs['class'] = 'form-control'
 
 
-class ProductCategoryForm(forms.ModelForm):
-
+class ProductCategoryEditForm(forms.ModelForm):
     class Meta:
         model = ProductCategory
         fields = '__all__'
@@ -27,6 +26,7 @@ class ProductCategoryForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
 
 
 class ProductForm(forms.ModelForm):
@@ -39,6 +39,7 @@ class ProductForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+            field.help_text = ''
 
 
 class ShopUserAdminEditForm(ShopUserEditForm):

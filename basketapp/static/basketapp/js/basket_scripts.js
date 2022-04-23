@@ -8,6 +8,6 @@ window.onload = function () {
                 $('.basket_list').html(data.result);
             },
         });
-       event.preventDefault();
+        event.preventDefault();
     });
 }

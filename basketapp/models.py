@@ -22,6 +22,18 @@ class Basket(models.Model):
         verbose_name='время',
         auto_now_add=True,
     )
+    is_active = models.BooleanField(
+        verbose_name='активна',
+        default=True
+    )
+
+    @staticmethod
+    def got_item(pk):
+        return Basket.objects.filter(pk=pk).first()
+
+    @staticmethod
+    def get_items(user):
+        return Basket.objects.filter(user=user)
 
     @property
     def product_cost(self):
@@ -29,12 +41,12 @@ class Basket(models.Model):
 
     @property
     def total_quantity(self):
-        items = Basket.objects.filter(user=self.user)
-        totalquantity = sum(list(map(lambda x: x.quantity, items)))
-        return totalquantity
+        _items = Basket.objects.filter(user=self.user)
+        _totalquantity = sum(list(map(lambda x: x.quantity, _items)))
+        return _totalquantity
 
     @property
     def total_cost(self):
-        items = Basket.objects.filter(user=self.user)
-        totalcost = sum(map(lambda x: x.product_cost, items))
-        return totalcost
+        _items = Basket.objects.filter(user=self.user)
+        _totalcost = sum(map(lambda x: x.product_cost, _items))
+        return _totalcost
