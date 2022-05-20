@@ -1,9 +1,10 @@
-from django.urls import path
+from django.urls import path, re_path
 from mainapp.views import products, product
 
 app_name = 'mainapp'
 urlpatterns = [
     path('', products, name='index'),
+    # re_path(r'^$', products, name='index'),
     path('category/<int:pk>/', products, name='category'),
     path('product/<int:pk>/', product, name='product'),
     path('category/<int:pk>/page/<int:page>/', products, name='page'),

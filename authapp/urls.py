@@ -10,5 +10,5 @@ urlpatterns = [
     path('register/', UserRegisterView.as_view(), name='register'),
     path('edit/', edit, name='edit'),
 
-    path('verify/<str:email>/<str:activate_key>/', verify, name='verify'),
+    path('verify/<str:email>/<str:activation_key>/', verify, name='verify'),
 ]

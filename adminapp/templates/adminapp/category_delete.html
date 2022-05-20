@@ -5,12 +5,12 @@
   <div class="product_delete">
     Уверены, что хотите удалить {{ category_to_delete.name }}
     ?
-    <form action="{% url 'admin_staff:category_delete' category_to_delete.pk %}" method="post">
+    <form action="{% url 'admin_staff:category_delete' category.pk %}" method="post">
       {% csrf_token %}
       <input class="btn btn-danger" type="submit" value="удалить">
     </form>
     <button class="btn btn-success">
-      <a href="{% url 'admin_staff:categories' category_to_delete.pk %}">
+      <a href="{% url 'admin_staff:categories' category.pk %}">
         Отмена
       </a>
     </button>

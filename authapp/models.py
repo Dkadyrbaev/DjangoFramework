@@ -46,12 +46,19 @@ class ShopUserProfile(models.Model):
 
     user = models.OneToOneField(
         ShopUser,
+        unique=True,
         null=False,
         db_index=True,
         on_delete=models.CASCADE,
     )
+    tagline = models.CharField(
+        verbose_name='тэги',
+        max_length=128,
+        blank=True,
+    )
     about = models.TextField(
         verbose_name='О себе',
+        max_length=512,
         blank=True,
         null=True,
     )
@@ -59,7 +66,7 @@ class ShopUserProfile(models.Model):
         verbose_name='пол',
         choices=GENDER_CHOICES,
         blank=True,
-        max_length=2,
+        max_length=1,
     )
 
     @receiver(post_save, sender=ShopUser)

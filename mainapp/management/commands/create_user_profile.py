@@ -9,3 +9,11 @@ class Command(BaseCommand):
         if users.exists():
             create_profiles = [ShopUserProfile(user=user) for user in users]
             ShopUserProfile.objects.bulk_create(create_profiles)
+
+
+# class Command(BaseCommand):
+#     def handle(self, *args, **kwargs):
+#         users = ShopUser.objects.all()
+#         for user in users:
+#             user_profile = ShopUserProfile.objects.create(user=user)
+#             user_profile.save()
