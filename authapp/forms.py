@@ -17,6 +17,17 @@ class ShopUserLoginForm(AuthenticationForm):
             field.widget.attrs['class'] = 'form-control'
 
 
+class ShopUserProfileForm(forms.ModelForm):
+    class Meta:
+        model = ShopUserProfile
+        fields = ('tagline', 'about', 'gender')
+
+    def __init__(self, *args, **kwargs):
+        super(ShopUserProfileForm, self).__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
+
+
 class ShopUserRegisterForm(UserCreationForm):
     class Meta:
         model = ShopUser
@@ -30,7 +41,7 @@ class ShopUserRegisterForm(UserCreationForm):
 
     def clean_age(self):
         data = self.cleaned_data['age']
-        if data < 118:
+        if data < 18:
             raise forms.ValidationError("Вы слишком молоды")
 
         return data
@@ -57,13 +68,7 @@ class ShopUserEditForm(UserChangeForm):
 
     def clean_age(self):
         data = self.cleaned_data['age']
-        if data < 118:
+        if data < 18:
             raise forms.ValidationError("Вы слишком молоды")
 
         return data
-
-
-class ShopUserProfileEditForm(forms.ModelForm):
-    class Meta:
-        model = ShopUserProfile
-        fields = ('about', 'gender')

@@ -2,16 +2,22 @@
 
 {% load static %}
 {% block content %}
-    <img src="/media/{{ user.avatar|default:'user-place-holder.png' }}" class="w-25">
-    <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype=multipart/form-data>
-        {% csrf_token %}
-        {{ edit_form.as_p }}
-        {{ profile_form.as_p }}
-      <button type="submit" class="btn btn-primary">Обновить</button>
-    </form>
-    <button class="btn btn-round form-control">
-        <a href="{% url 'index' %}" class="">
-            На главную
-        </a>
-    </button>
+
+
+            <img src="/media/{{ user.avatar|default:'user-place-holder.png' }}" class="rounded-circle">
+
+
+        <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype=multipart/form-data>
+            {% csrf_token %}
+            {{ edit_form.as_p }}
+            {{ profile_form.as_p }}
+          <button type="submit" class="form-control">Обновить</button>
+        </form>
+        <button class="btn btn-round form-control">
+            <a href="{% url 'index' %}" class="">
+                На главную
+            </a>
+        </button>
+
+
 {% endblock %}

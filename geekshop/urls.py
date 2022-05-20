@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from geekshop.views import index, contacts
 
 urlpatterns = [
@@ -29,7 +29,8 @@ urlpatterns = [
     path('admin_staff/', include('adminapp.urls', namespace='admin_staff'), name='admin_staff'),
     path('orders/', include('ordersapp.urls', namespace='order'), name='ordersapp'),
 
-    path('', include('social_django.urls', namespace='social'))
+    path('', include('social_django.urls', namespace='social')),
+
 ]
 
 if settings.DEBUG:

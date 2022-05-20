@@ -4,6 +4,7 @@
            совершить покупку
        </a>
    </button>
+{% endif %}
     <button class="btn btn-warning btn-round form-control last">
        <a href="{% url 'ordersapp:order_update' object.pk %}">
            изменить
@@ -12,7 +13,6 @@
    <button class="btn btn-default btn-round form-control last">
        <a href="{% url 'ordersapp:order_delete' object.pk %}">удалить</a>
    </button>
-{% endif %}
 <button class="btn btn-info btn-round form-control last">
    <a href="{% url 'ordersapp:main' %}">
        к списку заказов

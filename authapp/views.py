@@ -7,7 +7,7 @@ from django.contrib import auth
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.shortcuts import render
-from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileEditForm
+from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileForm
 
 
 def login(request):
@@ -73,20 +73,21 @@ class UserRegisterView(TemplateView):
             return super().get(request, *args, **kwargs)
 
 
-def verify(request, email, activate_key):
+def verify(request, email, activation_key):
     try:
         user = ShopUser.objects.get(email=email)
-        if user and user.activation_key == activate_key and not user.is_activation_key_expired:
+        if user and user.activation_key == activation_key and not user.is_activation_key_expired:
             user.activation_key = ''
             user.activation_key_expires = None
             user.is_active = True
             user.save(update_fields=['activation_key', 'activation_key_expires', 'is_active'])
             auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return render(request, 'authapp/verification.html')
+        else:
+            return render(request, 'authapp/verification.html')
     except Exception as e:
-        pass
-    else:
-        return render(request, 'authapp/verification.html')
+        print(f'error activation user: {e.args}')
+        return HttpResponseRedirect(reverse('index'))
 
 
 def edit(request):
@@ -94,13 +95,13 @@ def edit(request):
 
     if request.method == 'POST':
         edit_form = ShopUserEditForm(request.POST, request.FILES, instance=request.user)
-        profile_form = ShopUserProfileEditForm(request.POST, instance=request.user.shopuserprofile)
+        profile_form = ShopUserProfileForm(request.POST, instance=request.user.shopuserprofile)
         if edit_form.is_valid() and profile_form.is_valid():
             edit_form.save()
             return HttpResponseRedirect(reverse('auth:edit'))
     else:
         edit_form = ShopUserEditForm(instance=request.user)
-        profile_form = ShopUserProfileEditForm(instance=request.user.shopuserprofile)
+        profile_form = ShopUserProfileForm(instance=request.user.shopuserprofile)
     context = {
         'title': title,
         'edit_form': edit_form,

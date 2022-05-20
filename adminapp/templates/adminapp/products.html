@@ -47,7 +47,7 @@
                                 </td>
                                 <td>{{ user.last_login }}</td>
                                 <td>
-                                    <a {% if not product.is_active %} class="invisible" {% endif %} href="{% url 'admin_staff:product_delete' pk=product.id %}">
+                                    <a {% if not product.is_active %} class="invisible" {% endif %} href="{% url 'admin_staff:product_delete' pk=product.pk %}">
                                         <i class="fa fa-times-circle"></i>
                                     </a>
                                 </td>
