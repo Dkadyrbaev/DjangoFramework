@@ -3,7 +3,7 @@
 
 {% block content %}
   <div class="product_delete">
-    Уверены, что хотите удалить {{ product_to_delete.name }}
+    Уверены, что хотите удалить {{ product.name }}
     ?
     <form action="{% url 'admin_staff:product_delete' product.pk %}" method="post">
       {% csrf_token %}

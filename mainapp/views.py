@@ -6,6 +6,7 @@ from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
+from django.views.generic.base import TemplateView
 
 
 def load_from_json(file_name):
@@ -29,19 +30,6 @@ def get_hot_product():
 def get_same_products(hot_product):
     same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)[:3]
     return same_products
-
-
-def main(request):
-    title = 'главная'
-    products = Product.objects.all()[:3]
-
-    context = {
-        'title': title,
-        'products': products,
-        # 'basket': get_basket(request.user),
-    }
-
-    return render(request, 'mainapp/index.html', context)
 
 
 def products(request, pk=None, page=1):
@@ -106,17 +94,3 @@ def product(request, pk):
         'same_products': get_same_products(product),
     }
     return render(request, 'mainapp/product.html', context)
-
-
-def contact(request):
-    title = 'о нас'
-
-    locations = load_from_json('contact__locations')
-
-    context = {
-        'title': title,
-        'locations': locations,
-        # 'basket': get_basket(request.user),
-    }
-
-    return render(request, 'mainapp/contact.html', context)

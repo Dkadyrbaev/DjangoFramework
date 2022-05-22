@@ -46,15 +46,16 @@ class OrderCreateView(TitleContextMixin, CreateView):
             formset = OrderFormSet(self.request.POST)
         else:
             basket_items = Basket.objects.filter(user=self.request.user)
-            if basket_items:
+            if len(basket_items):
                 OrderFormSet = inlineformset_factory(
-                    Order, OrderItem, form=OrderItemForm, extra=basket_items.count()
+                    Order, OrderItem, form=OrderItemForm, extra=len(basket_items)
                 )
                 formset = OrderFormSet()
                 for num, form in enumerate(formset.forms):
                     form.initial['product'] = basket_items[num].product
                     form.initial['quantity'] = basket_items[num].quantity
                     form.initial['price'] = basket_items[num].product.price
+                basket_items.delete()
             else:
                 formset = OrderFormSet()
         context.update(
@@ -72,12 +73,11 @@ class OrderCreateView(TitleContextMixin, CreateView):
             if orderitems.is_valid():
                 orderitems.instance = self.object
                 orderitems.save()
-            basket_items = Basket.objects.filter(user=self.request.user)
-            basket_items.delete()
+            # basket_items = Basket.objects.filter(user=self.request.user)
+            # basket_items.delete()
 
-        if self.object.get_total_cost == 0:
+        if self.object.get_total_cost() == 0:
             self.object.delete()
-
         return super(OrderCreateView, self).form_valid(form)
 
 
@@ -92,33 +92,22 @@ class OrderUpdateView(TitleContextMixin, UpdateView):
         OrderFormSet = inlineformset_factory(Order, OrderItem, form=OrderItemForm, extra=1)
 
         if self.request.POST:
-            # orderitems = OrderFormSet(self.request.POST, instance=self.object)
-            context.update(
-                orderitems=OrderFormSet(self.request.POST, instance=self.object)
-            )
+            formset = OrderFormSet(self.request.POST, instance=self.object)
         else:
-            context.update(
-                orderitems=OrderFormSet(instance=self.object)
-            )
-        return context
+            formset = OrderFormSet(instance=self.object)
+            for form in formset.forms:
+                if form.instance.pk:
+                    form.initial['price'] = form.instance.product.price
 
-        # if self.request.POST:
-        #     formset = OrderFormSet(self.request.POST, instance=self.object)
-        # else:
-        #     formset = OrderFormSet(instance=self.object)
-        #     for form in formset.forms:
-        #         if form.instance.pk:
-        #             form.initial['price'] = form.instance.product.price
-        #
-        # context['orderitems'] = formset
-        # return context
+        context['orderitems'] = formset
+        return context
 
     def form_valid(self, form):
         context = self.get_context_data()
         orderitems = context['orderitems']
 
         with transaction.atomic():
-            # form.instance.user = self.request.user
+            form.instance.user = self.request.user
             self.object = form.save()
             if orderitems.is_valid():
                 orderitems.instance = self.object

@@ -4,17 +4,16 @@ from django.urls import reverse
 from django.template.loader import render_to_string
 from basketapp.models import Basket
 from mainapp.models import Product
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
 
 from django.contrib.auth.decorators import login_required
 
 
-@login_required
-def basket(request):
-    basket = Basket.objects.filter(user=request.user)
-    context = {
-        'basket': basket,
-    }
-    return render(request, 'basketapp/basket.html', context)
+class BasketView(LoginRequiredMixin, ListView):
+    model = Basket
+    template_name = 'basketapp/basket.html'
+    context_object_name = 'basket'
 
 
 @login_required
@@ -48,22 +47,41 @@ def is_ajax(request):
 
 @login_required
 def basket_edit(request, pk, quantity):
-    if request.is_ajax():
-        quantity = int(quantity)
-        new_basket_item = Basket.objects.get(pk=int(pk))
+    quantity = int(quantity)
+    new_basket_item = Basket.objects.get(pk=int(pk))
 
-        if quantity > 0:
-            new_basket_item.quantity = quantity
-            new_basket_item.save()
-        else:
-            new_basket_item.delete()
+    if quantity > 0:
+        new_basket_item.quantity = quantity
+        new_basket_item.save()
+    else:
+        new_basket_item.delete()
 
-        basket_items = Basket.objects.filter(user=request.user).order_by('product__category')
+    basket_items = Basket.objects.filter(user=request.user).order_by('product__category')
 
-        context = {
-            'basket': basket_items
-        }
+    context = {
+        'basket_items': basket_items,
+    }
 
-        result = render_to_string('basketapp/includes/inc_basket_list.html', context)
+    result = render_to_string('basketapp/includes/inc_basket_list.html', context)
 
-        return JsonResponse({'result': result})
+    return JsonResponse({'result': result})
+
+    # if request.is_ajax():
+    #     quantity = int(quantity)
+    #     new_basket_item = Basket.objects.get(pk=int(pk))
+    #
+    #     if quantity > 0:
+    #         new_basket_item.quantity = quantity
+    #         new_basket_item.save()
+    #     else:
+    #         new_basket_item.delete()
+    #
+    #     basket_items = Basket.objects.filter(user=request.user).order_by('product__category')
+    #
+    #     context = {
+    #         'basket': basket_items
+    #     }
+    #
+    #     result = render_to_string('basketapp/includes/inc_basket_list.html', context)
+    #
+    #     return JsonResponse({'result': result})
