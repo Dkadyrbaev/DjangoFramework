@@ -41,32 +41,49 @@ class Order(models.Model):
         default=True
     )
 
+    class Meta:
+        ordering = ('-created',)
+        verbose_name = 'заказ'
+        verbose_name_plural = 'заказы'
+
     def __str__(self):
         return f'Текущий заказ {self.pk}'
 
-    @property
-    def get_total_cost(self):
-        items = self.items.select_related()
-        return sum(list(map(lambda x: x.cost, items)))
+    # @property
+    # def get_total_cost(self):
+    #     items = self.items.select_related()
+    #     return sum(list(map(lambda x: x.cost, items)))
+    #
+    # @property
+    # def get_total_quantity(self):
+    #     items = self.items.select_related()
+    #     return sum(list(map(lambda x: x.quantity, items)))
 
-    @property
     def get_total_quantity(self):
-        items = self.items.select_related()
+        items = self.orderitems.select_related()
         return sum(list(map(lambda x: x.quantity, items)))
 
+    def get_product_type_quantity(self):
+        items = self.orderitems.select_related()
+        return len(items)
+
+    def get_total_cost(self):
+        items = self.orderitems.select_related()
+        return sum(list(map(lambda x: x.quantity * x.product.price, items)))
+
     def delete(self, using=None, keep_parents=False):
-        for item in self.items.select_related():
+        for item in self.orderitems.select_related():
             item.product.quantity += item.quantity
-            item.save
-        self.is_active = False
-        self.save()
+            item.product.save()
+        # self.is_active = False
+        # self.save()
 
 
 class OrderItem(models.Model):
     order = models.ForeignKey(
         Order,
         verbose_name='Заказ',
-        related_name='items',
+        related_name='orderitems',
         on_delete=models.CASCADE
     )
     product = models.ForeignKey(
@@ -84,5 +101,5 @@ class OrderItem(models.Model):
         return OrderItem.objects.filter(pk=pk).first()
 
     @property
-    def cost(self):
+    def get_product_cost(self):
         return self.product.price * self.quantity

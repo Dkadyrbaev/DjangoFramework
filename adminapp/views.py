@@ -107,7 +107,7 @@ class CategoryUpdateView(UpdateView):
     template_name = 'adminapp/category_update.html'
     success_url = reverse_lazy('admin_staff:categories')
 
-    def get_context_data(self, object_lit=None, **kwargs):
+    def get_context_data(self, object_list=None, **kwargs):
         context = super(CategoryUpdateView, self).get_context_data()
         context['title'] = 'категории/редактирование'
         return context
@@ -115,12 +115,13 @@ class CategoryUpdateView(UpdateView):
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = ProductCategory
-    success_url = reverse_lazy('admin_staff:category_delete')
+    success_url = reverse_lazy('admin_staff:categories')
     template_name = 'adminapp/category_delete.html'
 
     def get_context_data(self, object_list=None, **kwargs):
         context = super(CategoryDeleteView, self).get_context_data()
         context['title'] = 'категории/удаление'
+        context['id'] = self.kwargs.get('object.id')
         return context
 
     def delete(self, *args, **kwargs):

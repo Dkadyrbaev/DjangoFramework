@@ -4,41 +4,42 @@ from django.views.generic import TemplateView
 
 from authapp.models import ShopUser, ShopUserProfile
 from django.contrib import auth
+from django.contrib.auth.views import LogoutView, LoginView
+from django.views.generic import UpdateView
 from django.http import HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.shortcuts import render
 from authapp.forms import ShopUserLoginForm, ShopUserRegisterForm, ShopUserEditForm, ShopUserProfileForm
 
 
-def login(request):
-    title = 'страница входа'
+class UserLoginView(LoginView):
+    template_name = 'authapp/login.html'
 
-    login_form = ShopUserLoginForm(data=request.POST or None)
+    def get_context_data(self, **kwargs):
+        context = super(UserLoginView, self).get_context_data()
+        login_form = ShopUserLoginForm(data=self.request.POST or None)
 
-    next = request.GET['next'] if 'next' in request.GET.keys() else ''
-    if request.method == 'POST' and login_form.is_valid():
-        username = request.POST['username']
-        password = request.POST['password']
+        next = self.request.GET['next'] if 'next' in self.request.GET.keys() else ''
+        if self.request.method == 'POST' and login_form.is_valid():
+            username = self.request.POST['username']
+            password = self.request.POST['password']
 
-        user = auth.authenticate(username=username, password=password)
-        if user and user.is_active:
-            auth.login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            if 'next' in request.POST.keys():
-                return HttpResponseRedirect(request.POST['next'])
-            else:
-                return HttpResponseRedirect(reverse('index'))
+            user = auth.authenticate(username=username, password=password)
+            if user and user.is_active:
+                auth.login(self.request, user, backend='django.contrib.auth.backends.ModelBackend')
+                if 'next' in self.request.POST.keys():
+                    return HttpResponseRedirect(self.request.POST['next'])
+                else:
+                    return HttpResponseRedirect(reverse('index'))
 
-    context = {
-        'title': title,
-        'login_form': login_form,
-        'next': next,
-    }
-    return render(request, 'authapp/login.html', context)
+        context['login_form'] = login_form
+        context['next'] = next
+
+        return context
 
 
-def logout(request):
-    auth.logout(request)
-    return HttpResponseRedirect(reverse('index'))
+class UserLogoutView(LogoutView):
+    template_name = 'geekshop/index.html'
 
 
 class UserRegisterView(TemplateView):
@@ -88,6 +89,31 @@ def verify(request, email, activation_key):
     except Exception as e:
         print(f'error activation user: {e.args}')
         return HttpResponseRedirect(reverse('index'))
+
+
+class UserUpdateView(UpdateView):
+    template_name = 'authapp/edit.html'
+    register_form_class = ShopUserRegisterForm
+    model = ShopUser
+    fields = ()
+
+    def get_context_data(self, **kwargs):
+        title = 'Изменение'
+        context = super(UserUpdateView, self).get_context_data(**kwargs)
+        context.update(
+            title=title,
+            edit_form=self.register_form_class()
+        )
+        return context
+
+    def post(self, request, *args, **kwargs):
+        edit_form = self.register_form_class(request.POST, request.FILES)
+
+        if edit_form.is_valid():
+            user = edit_form.save()
+            return HttpResponseRedirect(reverse('auth:login'))
+        else:
+            return super().get(request, *args, **kwargs)
 
 
 def edit(request):

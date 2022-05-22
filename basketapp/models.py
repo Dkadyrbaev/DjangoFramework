@@ -28,7 +28,7 @@ class Basket(models.Model):
     )
 
     @staticmethod
-    def got_item(pk):
+    def get_item(pk):
         return Basket.objects.filter(pk=pk).first()
 
     @staticmethod
