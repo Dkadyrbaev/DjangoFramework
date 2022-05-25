@@ -13,6 +13,10 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save, pre_delete
 
 
+def is_ajax(request):
+    return request.META.get("HTTP_X_REQUESTED_WITH") == "XMLHttpRequest"
+
+
 class TitleContextMixin:
     def get_title(self):
         return getattr(self, 'title', '')
@@ -169,8 +173,8 @@ def product_quantity_update_delete(sender, instance, **kwargs):
 
 
 def get_product_price(request, pk):
-    if request.is_ajax():
-        product = Product.objects.filter(pk=int(pk),).first()
+    if is_ajax(request):
+        product = Product.objects.filter(pk=int(pk)).first()
         if product:
             return JsonResponse({'price': product.price})
         else:

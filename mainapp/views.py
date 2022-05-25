@@ -34,7 +34,7 @@ class ProductsView(ListView):
     paginate_by = 2 # как заставить его работать на same_products?
     template_name = 'mainapp/products.html'
 
-    def get_context_data(self, *, object_list=None, **kwargs):
+    def get_context_data(self, *, pk=None, page=1, object_list=None, **kwargs):
         context = super(ProductsView, self).get_context_data()
         context['links_menu'] = ProductCategory.objects.all()
         hot_product = get_hot_product()
@@ -43,7 +43,6 @@ class ProductsView(ListView):
         context['same_products'] = same_products
 
         return context
-
 
 
 def products(request, pk=None, page=1):

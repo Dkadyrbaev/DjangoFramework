@@ -73,13 +73,20 @@ window.onload = function () {
     function orderSummaryRecalc() {
         order_total_quantity = 0;
         order_total_price = 0;
-    }
-    function orderSummaryRecalc() {
-        order_total_quantity = 0;
-        order_total_price = 0;
+
+        for (let i=0; i < total_forms; i++){
+            order_total_quantity += quantity_arr[i];
+            order_total_price += quantity_arr[i] * price_arr[i];
+        }
         $('.order_total_quantity').html(order_total_quantity.toString());
         $('.order_total_cost').html(Number(order_total_price.toFixed(2).toString()));
     }
+//    function orderSummaryRecalc() {
+//        order_total_quantity = 0;
+//        order_total_price = 0;
+//        $('.order_total_quantity').html(order_total_quantity.toString());
+//        $('.order_total_cost').html(Number(order_total_price.toFixed(2).toString()));
+//    }
 
     $('.order_form select').change(function () {
         let target = event.target;

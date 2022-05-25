@@ -7,6 +7,7 @@ from ordersapp.views import (
     OrderDetailView,
     OrderUpdateView,
     order_forming_complete,
+    get_product_price,
 )
 
 app_name = "ordersapp"
@@ -18,4 +19,5 @@ urlpatterns = [
     path('update/<int:pk>/', OrderUpdateView.as_view(), name='order_update'),
     path('delete/<int:pk>/', OrderDeleteView.as_view(), name='order_delete'),
     path('detail/<int:pk>/', OrderDetailView.as_view(), name='order_read'),
+    path('product/<int:pk>/price/', get_product_price, name='get_product_price')
 ]
