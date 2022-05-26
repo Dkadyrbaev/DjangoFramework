@@ -1,10 +1,22 @@
 [
   {
-      "name": "Chairs",
-      "description": "Chairs"
+      "name": "Стулья",
+      "description": ""
+    },
+  {
+      "name": "Дом",
+      "description": "милый дом"
   },
   {
-      "name": "Sofa",
-      "description": "best sofa"
+      "name": "Офис",
+      "description": "чистый офис"
+  },
+  {
+      "name": "Модерн",
+      "description": ""
+  },
+  {
+      "name": "Классика",
+      "description": ""
   }
 ]

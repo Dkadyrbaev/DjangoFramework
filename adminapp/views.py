@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from adminapp.forms import ProductEditForm, ProductForm, ShopUserAdminEditForm, ProductCategoryForm
+from adminapp.forms import ProductForm, ShopUserAdminEditForm, ProductCategoryEditForm
 from authapp.forms import ShopUserRegisterForm
 from authapp.models import ShopUser
 from mainapp.models import ProductCategory, Product
@@ -72,59 +72,64 @@ class UserDeleteView(DeleteView):
         return HttpResponseRedirect(self.success_url)
 
 
-class ProductCategoryListView(ListView):
+class CategoryListView(LoginRequiredMixin, ListView):
+
     model = ProductCategory
     template_name = 'adminapp/categories.html'
+    context_object_name = 'objects'
 
-    def get_context_data(self, **kwargs):
-        context = super(ProductCategoryListView, self).get_context_data()
-        title = 'админка/категории'
-        context.update({'title': title})
+    # model = ProductCategory
+    # template_name = 'adminapp/categories.html'
+    #
+    # def get_context_data(self, **kwargs):
+    #     context = super(CategoryListView, self).get_context_data()
+    #     title = 'админка/категории'
+    #     context.update({'title': title})
+    #
+    #     return context
 
+
+class CategoryCreateView(CreateView):
+    model = ProductCategory
+    form_class = ProductCategoryEditForm
+    template_name = 'adminapp/category_update.html'
+    success_url = reverse_lazy('admin_staff:categories')
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(CategoryCreateView, self).get_context_data()
+        context['title'] = 'категории/создание'
         return context
 
 
-class ProductCategoryCreateView(CreateView):
+class CategoryUpdateView(UpdateView):
     model = ProductCategory
-    template_name = 'adminapp/category_form.html'
-    # fields = '__all__'
-    form_class = ProductCategoryForm
-    success_url = reverse_lazy('adminapp:categories')
+    form_class = ProductCategoryEditForm
+    template_name = 'adminapp/category_update.html'
+    success_url = reverse_lazy('admin_staff:categories')
 
-    def get_context_data(self):
-        context = super(ProductCategoryCreateView, self).get_context_data()
-        title = 'категории/создание'
-        context.update({'title': title})
-
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(CategoryUpdateView, self).get_context_data()
+        context['title'] = 'категории/редактирование'
         return context
 
 
-class ProductCategoryUpdateView(UpdateView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     model = ProductCategory
-    template_name = 'adminapp/category_form.html'
-    # fields = '__all__'
-    form_class = ProductCategoryForm
-    success_url = reverse_lazy('adminapp:categories')
-
-    def get_context_data(self):
-        context = super(ProductCategoryUpdateView, self).get_context_data()
-        title = 'категории/редактирование'
-        context.update({'title': title})
-
-        return context
-
-
-class ProductCategoryDeleteView(DeleteView):
-    model = ProductCategory
+    success_url = reverse_lazy('admin_staff:categories')
     template_name = 'adminapp/category_delete.html'
-    success_url = reverse_lazy('adminapp:categories')
+
+    def get_context_data(self, object_list=None, **kwargs):
+        context = super(CategoryDeleteView, self).get_context_data()
+        context['title'] = 'категории/удаление'
+        context['id'] = self.kwargs.get('object.id')
+        return context
 
     def delete(self, *args, **kwargs):
         self.object = self.get_object()
         self.object.is_active = False
         self.object.save()
 
-        return HttpResponseRedirect(self.success_url)
+        return HttpResponseRedirect(self.get_success_url())
 
 
 def products(request, pk):

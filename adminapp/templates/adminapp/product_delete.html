@@ -1,11 +1,18 @@
 {% extends 'adminapp/base.html' %}
+{% load static %}
+
 {% block content %}
-    <div class="login">
-    <p>Вы уверены что хотите удалить продукта <span class="label-warning">{{ object.name }}</span> ?</p>
-    <form method="post">
-    {% csrf_token %}
-        <input type="submit" value="Уверень!" class="btn btn-danger form-control">
+  <div class="product_delete">
+    Уверены, что хотите удалить {{ product.name }}
+    ?
+    <form action="{% url 'admin_staff:product_delete' product.pk %}" method="post">
+      {% csrf_token %}
+      <input class="btn btn-danger" type="submit" value="удалить">
     </form>
-        <a href="{% url 'adminapp:products' object.pk %}" class="btn btn-primary form-control">Нет</a>
-    </div>
+    <button class="btn btn-success">
+      <a href="{% url 'admin_staff:products' product.pk %}">
+        Отмена
+      </a>
+    </button>
+  </div>
 {% endblock %}

@@ -4,7 +4,17 @@ from django.db import models
 from mainapp.models import Product
 
 
+class BasketQuerySet(models.QuerySet):
+
+    def delete(self, *args, **kwargs):
+        for object in self:
+            object.product.quantity += object.quantity
+            object.product.save()
+        super(BasketQuerySet, self).delete(*args, **kwargs)
+
+
 class Basket(models.Model):
+    objects = BasketQuerySet.as_manager()
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -22,6 +32,18 @@ class Basket(models.Model):
         verbose_name='время',
         auto_now_add=True,
     )
+    is_active = models.BooleanField(
+        verbose_name='активна',
+        default=True
+    )
+
+    @staticmethod
+    def get_item(pk):
+        return Basket.objects.filter(pk=pk).first()
+
+    @staticmethod
+    def get_items(user):
+        return Basket.objects.filter(user=user)
 
     @property
     def product_cost(self):
@@ -29,12 +51,12 @@ class Basket(models.Model):
 
     @property
     def total_quantity(self):
-        items = Basket.objects.filter(user=self.user)
-        totalquantity = sum(list(map(lambda x: x.quantity, items)))
-        return totalquantity
+        _items = Basket.objects.filter(user=self.user)
+        _totalquantity = sum(list(map(lambda x: x.quantity, _items)))
+        return _totalquantity
 
     @property
     def total_cost(self):
-        items = Basket.objects.filter(user=self.user)
-        totalcost = sum(map(lambda x: x.product_cost, items))
-        return totalcost
+        _items = Basket.objects.filter(user=self.user)
+        _totalcost = sum(map(lambda x: x.product_cost, _items))
+        return _totalcost

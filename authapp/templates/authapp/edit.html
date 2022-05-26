@@ -1,24 +1,23 @@
 {% extends 'authapp/base.html' %}
-{% load static %}
 
+{% load static %}
 {% block content %}
-    <div class="col-4 mx-auto">
-        <div class="row">
-            <div class="user_avatar" max-width="290px">
-                <img src="/media/{{ user.avatar }}" max-width="290px" class="rounded-circle">
-            </div>
-        </div>
-    <div class="row">
-        <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype="multipart/form-data">
+
+
+            <img src="/media/{{ user.avatar|default:'user-place-holder.png' }}" class="rounded-circle">
+
+
+        <form class="form-horizontal" action="{% url 'auth:edit' %}" method="post" enctype=multipart/form-data>
             {% csrf_token %}
             {{ edit_form.as_p }}
-            <input class="form-control" type="submit" value="сохранить">
+            {{ profile_form.as_p }}
+          <button type="submit" class="form-control">Обновить</button>
         </form>
-        <button class="btn btn-round form-control last">
+        <button class="btn btn-round form-control">
             <a href="{% url 'index' %}" class="">
-                на главную
+                На главную
             </a>
         </button>
-    </div>
-    </div>
+
+
 {% endblock %}

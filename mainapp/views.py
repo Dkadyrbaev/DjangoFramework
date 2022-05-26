@@ -1,45 +1,68 @@
-import random
+import json
+import os
+from random import randint
 
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from basketapp.models import Basket
 from mainapp.models import Product, ProductCategory
+from django.views.generic.base import TemplateView
+from django.views.generic import DetailView, ListView
 
 
-def get_basket(user):
-    if user.is_authenticated:
-        return Basket.objects.filter(user=user)
-    else:
-        return []
+def load_from_json(file_name):
+    with open(os.path.join('JSON_PATH', file_name + '.json'), 'r') as infile:
+        return json.load(infile)
 
 
 def get_hot_product():
-    products = Product.objects.all()
+    start = 0
+    stop = len(Product.objects.all()) - 1
+    hot_product = Product.objects.all()[randint(start, stop)]
 
-    return random.sample(list(products), 1)[0]
+    return hot_product
 
 
 def get_same_products(hot_product):
-    same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)[:3]
+    same_products = Product.objects.filter(category=hot_product.category).exclude(pk=hot_product.pk)
     return same_products
 
 
+class ProductsView(ListView):
+    model = Product
+    title = 'Каталог v2.0'
+    paginate_by = 2 # как заставить его работать на same_products?
+    template_name = 'mainapp/products.html'
+
+    def get_context_data(self, *, pk=None, page=1, object_list=None, **kwargs):
+        context = super(ProductsView, self).get_context_data()
+        context['links_menu'] = ProductCategory.objects.all()
+        hot_product = get_hot_product()
+        same_products = get_same_products(hot_product)
+        context['hot_product'] = hot_product
+        context['same_products'] = same_products
+
+        return context
+
+
 def products(request, pk=None, page=1):
-    title = 'продукты'
+    title = 'Каталог'
 
     links_menu = ProductCategory.objects.all()
-    basket = get_basket(request.user)
-
-    hot_product = get_hot_product()
-    same_products = get_same_products(hot_product)
 
     if pk is not None:
         if pk == 0:
-            products = Product.objects.all().order_by('price')
-            category = {'name': 'все'}
+            category = {'pk': 0, 'name': 'все'}
+            products = Product.objects.filter(is_active=True, category__is_active=True, quantity__gte=1).order_by(
+                'price')
         else:
             category = get_object_or_404(ProductCategory, pk=pk)
-            products = Product.objects.filter(category__pk=pk).order_by('price')
+            products = Product.objects.filter(
+                category__pk=pk,
+                is_active=True,
+                category__is_active=True,
+                quantity__gte=1,
+            ).order_by('price')
 
         paginator = Paginator(products, 2)
         try:
@@ -53,38 +76,35 @@ def products(request, pk=None, page=1):
             'title': title,
             'links_menu': links_menu,
             'category': category,
-            'related_products': same_products,
             'products': products_paginator,
-            'hot_product': hot_product,
-            'basket': basket
         }
         return render(request, 'mainapp/products.html', context)
 
-    products = Product.objects.all().order_by('price')
+    hot_product = get_hot_product()
+    same_products = get_same_products(hot_product)[:3]
+    products = Product.objects.filter(is_active=True, category__is_active=True, quantity__gte=1).order_by('price')[:3]
 
     context = {
         'title': title,
         'links_menu': links_menu,
-        'related_products': same_products,
-        'products': products,
         'hot_product': hot_product,
-        'basket': basket
+        'same_products': same_products,
+        'products': products,
     }
+
     return render(request, 'mainapp/products.html', context)
 
 
-def product(request, pk):
-    title = 'продукты'
-    link_menu = ProductCategory.objects.all()
-    basket = get_basket(request.user)
-    product = get_object_or_404(Product, pk=pk)
-    same_products = get_same_products(product)
+class ProductDetailView(DetailView):
+    model = Product
+    title = 'Страница продукта'
 
-    context = {
-        'title': title,
-        'links_menu': link_menu,
-        'related_products': same_products,
-        'basket': basket,
-        'product': product,
-    }
-    return render(request, 'mainapp/product.html', context)
+    def get_context_data(self, **kwargs):
+        context = super(ProductDetailView, self).get_context_data()
+        links_menu = ProductCategory.objects.all()
+        same_products = Product.objects.filter(category=self.object.category)[:2]
+        context['links_menu'] = links_menu
+        context['same_products'] = same_products
+        return context
+
+
