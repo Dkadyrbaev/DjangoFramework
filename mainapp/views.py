@@ -31,7 +31,7 @@ def get_same_products(hot_product):
 class ProductsView(ListView):
     model = Product
     title = 'Каталог v2.0'
-    paginate_by = 2 # как заставить его работать на same_products?
+    paginate_by = 2  # как заставить его работать на same_products?
     template_name = 'mainapp/products.html'
 
     def get_context_data(self, *, pk=None, page=1, object_list=None, **kwargs):
