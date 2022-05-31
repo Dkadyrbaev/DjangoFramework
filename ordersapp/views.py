@@ -4,7 +4,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from basketapp.models import Basket
 from mainapp.models import Product
 from ordersapp.forms import OrderItemForm, OrderForm
@@ -35,6 +36,10 @@ class OrderListView(TitleContextMixin, ListView):
 
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user, is_active=True)
+
+    # @method_decorator(login_required())
+    # def dispatch(self, *args, **kwargs):
+    #     return super(ListView, self).dispatch(*args, **kwargs)
 
 
 class OrderCreateView(TitleContextMixin, CreateView):
