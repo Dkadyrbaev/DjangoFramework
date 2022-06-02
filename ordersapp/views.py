@@ -64,7 +64,7 @@ class OrderCreateView(TitleContextMixin, CreateView):
                     form.initial['product'] = basket_items[num].product
                     form.initial['quantity'] = basket_items[num].quantity
                     form.initial['price'] = basket_items[num].product.price
-                basket_items[num].delete()
+                    basket_items[num].delete()
             else:
                 formset = OrderFormSet()
         context.update(
@@ -133,12 +133,12 @@ class OrderDeleteView(TitleContextMixin, DeleteView):
     title = 'Удаление заказа'
     success_url = reverse_lazy('ordersapp:main')
 
-    def delete(self, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
-
-        return HttpResponseRedirect(self.success_url)
+    # def delete(self, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     self.object.is_active = False
+    #     self.object.save()
+    #
+    #     return HttpResponseRedirect(self.success_url)
 
 
 class OrderDetailView(TitleContextMixin, DetailView):
