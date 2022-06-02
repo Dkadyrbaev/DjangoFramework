@@ -4,7 +4,8 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, DeleteView, UpdateView
-
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import login_required
 from basketapp.models import Basket
 from mainapp.models import Product
 from ordersapp.forms import OrderItemForm, OrderForm
@@ -36,6 +37,10 @@ class OrderListView(TitleContextMixin, ListView):
     def get_queryset(self):
         return Order.objects.filter(user=self.request.user, is_active=True)
 
+    # @method_decorator(login_required())
+    # def dispatch(self, *args, **kwargs):
+    #     return super(ListView, self).dispatch(*args, **kwargs)
+
 
 class OrderCreateView(TitleContextMixin, CreateView):
     model = Order
@@ -59,7 +64,7 @@ class OrderCreateView(TitleContextMixin, CreateView):
                     form.initial['product'] = basket_items[num].product
                     form.initial['quantity'] = basket_items[num].quantity
                     form.initial['price'] = basket_items[num].product.price
-                basket_items[num].delete()
+                    basket_items[num].delete()
             else:
                 formset = OrderFormSet()
         context.update(
@@ -128,12 +133,12 @@ class OrderDeleteView(TitleContextMixin, DeleteView):
     title = 'Удаление заказа'
     success_url = reverse_lazy('ordersapp:main')
 
-    def delete(self, *args, **kwargs):
-        self.object = self.get_object()
-        self.object.is_active = False
-        self.object.save()
-
-        return HttpResponseRedirect(self.success_url)
+    # def delete(self, *args, **kwargs):
+    #     self.object = self.get_object()
+    #     self.object.is_active = False
+    #     self.object.save()
+    #
+    #     return HttpResponseRedirect(self.success_url)
 
 
 class OrderDetailView(TitleContextMixin, DetailView):

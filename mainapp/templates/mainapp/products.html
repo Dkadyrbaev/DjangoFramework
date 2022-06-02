@@ -75,19 +75,19 @@
                     </h2>
                 {% endif %}
             </div>
-            <div class="paginator">
-                {% if products.has_previous %}
-                    <a href="{% url 'products:page' category.pk products.previous_page_number %}">
-                        <
+            <div class="pagination">
+                {% if page_obj.has_previous %}
+                    <a href="{% url 'products:page' pk page_obj.previous_page_number %}">
+                        pre
                     </a>
                 {% endif %}
                 <span class="current">
-                                страница {{ products.number }} из
-                                {{ products.paginator.num_pages }}
-                              </span>
-                {% if products.has_next %}
-                    <a href="{% url 'products:page' category.pk products.next_page_number %}">
-                        >
+                    страница {{ page_obj.number }} из
+                    {{ page_obj.paginator.num_pages }}
+                </span>
+                {% if page_obj.has_next %}
+                    <a href="{% url 'products:page' pk page_obj.next_page_number %}">
+                        next
                     </a>
                 {% endif %}
             </div>
@@ -95,7 +95,7 @@
 
         <div class="category-products products">
 
-            {% for product in products %}
+            {% for product in object_list %}
                 <div class="block">
                     <a href="{% url 'products:product' product.pk %}">
                         <img src="/media/{{ product.image }}" alt="product" style="width: 270px;">
