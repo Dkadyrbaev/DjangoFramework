@@ -143,12 +143,12 @@ class OrderDeleteView(TitleContextMixin, DeleteView):
 
 class OrderDetailView(TitleContextMixin, DetailView):
     model = Order
-    title = 'заказ/просмотр'
+    # title = 'заказ/просмотр'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(OrderDetailView, self).get_context_data(**kwargs)
-    #     context['title'] = 'заказ/просмотр'
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super(OrderDetailView, self).get_context_data(**kwargs)
+        context['title'] = 'заказ/просмотр'
+        return context
 
 
 def order_forming_complete(request, pk):

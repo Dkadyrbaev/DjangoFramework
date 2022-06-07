@@ -1,3 +1,4 @@
+from django.db.models import F
 from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
@@ -28,6 +29,7 @@ def basket_add(request, pk):
         basket = Basket(user=request.user, product=product)
 
     basket.quantity += 1
+    # basket.quantity = F('quantity') + 1
     basket.save()
 
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))

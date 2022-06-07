@@ -25,20 +25,20 @@ class ShopUser(AbstractUser):
         blank=True,
     )
 
-    def is_activation_key_expired(self):
-        if now() <= self.activation_key_expires:
-            return False
-        else:
-            return True
-
-    # @property
     # def is_activation_key_expired(self):
-    #     try:
-    #         if now() <= self.activation_key_expires:
-    #             return False
-    #     except Exception as e:
-    #         pass
-    #     return True
+    #     if now() <= self.activation_key_expires:
+    #         return False
+    #     else:
+    #         return True
+
+    @property
+    def is_activation_key_expired(self):
+        try:
+            if now() <= self.activation_key_expires:
+                return False
+        except Exception as e:
+            pass
+        return True
 
 
 class ShopUserProfile(models.Model):

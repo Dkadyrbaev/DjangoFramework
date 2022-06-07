@@ -1,0 +1,228 @@
+[
+  {
+    "model": "sessions.session",
+    "pk": "ax07yl90qxxk4uf1uo4lsnc15q6fj8y7",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnZxF9K-pzB8no3OIBsKU4qxN1JpBTQzsx7bxHituawNV7CTOIqQFx-Gcb05HIIesRyrzLVsi4zyiORp21yrMSv29n-HeTY8r4emEhB72PqOwIHhAaVZs-AE1vHHWIavEW2YKy2Dndmok4TumSMAvH5AvzVOHA:1ny5L0:7GHLPdPr-FAalrt_YgVYLflg7k0vUKdFW1uQjqJCr7E",
+      "expire_date": "2022-06-20T08:31:38.367"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "e5yaousqfgcjzk34u9ltgjv2ubfwan66",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnZxF9K-pzB8no3OIBsKU4qxN1JpBTQzsx7bxHituawNV7CTOIqQFx-Gcb05HIIesRyrzLVsi4zyiORp21yrMSv29n-HeTY8r4emEhB72PqOwIHhAaVZs-AE1vHHWIavEW2YKy2Dndmok4TumSMAvH5AvzVOHA:1nh32J:ifJO7Asal6LcJUemPpe3gq0UJAzGBiAgYMTr01AHmPA",
+      "expire_date": "2022-05-04T08:37:55.668"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "jbfaojj494zhq3v90059kjxrhbdt2h8j",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnZxF9K-pzB8no3OIBsKU4qxN1JpBTQzsx7bxHituawNV7CTOIqQFx-Gcb05HIIesRyrzLVsi4zyiORp21yrMSv29n-HeTY8r4emEhB72PqOwIHhAaVZs-AE1vHHWIavEW2YKy2Dndmok4TumSMAvH5AvzVOHA:1nwcqj:I83Kc3l8Vo2Wv-l71HZBPZ4U_ajQylrQviVaTD7xduY",
+      "expire_date": "2022-06-16T07:54:21.919"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "ljv3057tevgzibz37tekcmxm67ux6znd",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnZxF9K-pzB8no3OIBsKU4qxN1JpBTQzsx7bxHituawNV7CTOIqQFx-Gcb05HIIesRyrzLVsi4zyiORp21yrMSv29n-HeTY8r4emEhB72PqOwIHhAaVZs-AE1vHHWIavEW2YKy2Dndmok4TumSMAvH5AvzVOHA:1nvYdH:LW6pHJTxudMUfBPTe07q1Gt9LADMwd7zQzzY8IZkEFw",
+      "expire_date": "2022-06-13T09:12:03.939"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "rkgfzp069dknd160vmh7ai9cuxjdk3bl",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnZxF9K-pzB8no3OIBsKU4qxN1JpBTQzsx7bxHituawNV7CTOIqQFx-Gcb05HIIesRyrzLVsi4zyiORp21yrMSv29n-HeTY8r4emEhB72PqOwIHhAaVZs-AE1vHHWIavEW2YKy2Dndmok4TumSMAvH5AvzVOHA:1np0ot:LlUJsBM8KSfJdJLoy6OIhJ8OB15EDV5j7E8HZXtvqOI",
+      "expire_date": "2022-05-26T07:52:59.265"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "x0v9l7mdxqdqetfssmuehc1ed2u9mnzs",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnZxF9K-pzB8no3OIBsKU4qxN1JpBTQzsx7bxHituawNV7CTOIqQFx-Gcb05HIIesRyrzLVsi4zyiORp21yrMSv29n-HeTY8r4emEhB72PqOwIHhAaVZs-AE1vHHWIavEW2YKy2Dndmok4TumSMAvH5AvzVOHA:1nc34W:QKRIefluZDG0CVt99-VutzEu3E_zuDcThe-JAQ2Lqgs",
+      "expire_date": "2022-04-20T13:39:32.623"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "yp3pfcdwvrsaahbtma9o4l96w33j2e5u",
+    "fields": {
+      "session_data": ".eJxVjDsOwjAQBe_iGlnZxF9K-pzB8no3OIBsKU4qxN1JpBTQzsx7bxHituawNV7CTOIqQFx-Gcb05HIIesRyrzLVsi4zyiORp21yrMSv29n-HeTY8r4emEhB72PqOwIHhAaVZs-AE1vHHWIavEW2YKy2Dndmok4TumSMAvH5AvzVOHA:1nx0mJ:A4iGdx-6KDn-vIIn4_5QbmUkzEDaLRjisFMajaxms08",
+      "expire_date": "2022-06-17T09:27:23.629"
+    }
+  },
+  {
+    "model": "sessions.session",
+    "pk": "yw0u02057dlzxgo40nkcq8lbukakhfld",
+    "fields": {
+      "session_data": ".eJxVjDsOgzAQBe_iOrIW8AenTM8Z0K53HUgiW8JQRbl7QKJI2jcz761G3NZp3Kos48zqqpy6_G6E8Sn5APzAfC86lrwuM-lD0Seteigsr9vp_h1MWKe9Dl0H0kAfg23BWG_IkmCynHYQDIFQaBs0LfdM1jTOpyAQATl4lyiqzxfLhDfP:1neXVM:NSz2AkTAU80fEIw_Fd-t7R-q3RrXbr9CyCq7TFzRYEw",
+      "expire_date": "2022-04-27T10:33:32.321"
+    }
+  },
+  {
+    "model": "mainapp.productcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Chairs",
+      "description": "Best Chairs",
+      "short_desc": "",
+      "created": "2022-03-30T18:28:39.469",
+      "updated": "2022-05-21T11:53:54.900",
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.productcategory",
+    "pk": 2,
+    "fields": {
+      "name": "Sofa",
+      "description": "best sofa",
+      "short_desc": "",
+      "created": "2022-03-30T18:28:39.476",
+      "updated": "2022-03-30T18:28:39.476",
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.productcategory",
+    "pk": 6,
+    "fields": {
+      "name": "test category",
+      "description": "description of test category",
+      "short_desc": "short description of test category",
+      "created": "2022-06-06T08:35:10.961",
+      "updated": "2022-06-06T09:59:51.413",
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 2,
+    "fields": {
+      "category": 2,
+      "name": "white sofa",
+      "short_desc": "",
+      "image": "products_images/product-3-sm.jpg",
+      "description": "",
+      "price": "15600.00",
+      "quantity": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 3,
+    "fields": {
+      "category": 2,
+      "name": "Sofa Red",
+      "short_desc": "Simple Red Sofa",
+      "image": "products_images/product-4_yuL4VNr.jpg",
+      "description": "Description of simple red sofa",
+      "price": "18900.00",
+      "quantity": 30,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 5,
+    "fields": {
+      "category": 1,
+      "name": "test chair 1",
+      "short_desc": "short description of test chair 1",
+      "image": "products_images/product-4_YwByOUq.jpg",
+      "description": "description of test chair 1",
+      "price": "46.00",
+      "quantity": 27,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 6,
+    "fields": {
+      "category": 2,
+      "name": "grey sofa",
+      "short_desc": "short description of grey sofa",
+      "image": "products_images/product-3-sm_MtOSL2o_5qFq59T.jpg",
+      "description": "description of grey sofa",
+      "price": "2030.00",
+      "quantity": 21,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 7,
+    "fields": {
+      "category": 1,
+      "name": "Chair test",
+      "short_desc": "short description of test chair",
+      "image": "products_images/product-21.jpg",
+      "description": "description of test chair",
+      "price": "1000.00",
+      "quantity": 2,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 8,
+    "fields": {
+      "category": 1,
+      "name": "Chair test 2",
+      "short_desc": "short description of test 2 chair",
+      "image": "products_images/product-5-sm.jpg",
+      "description": "description of test 2 chair",
+      "price": "3232.00",
+      "quantity": 22,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 9,
+    "fields": {
+      "category": 2,
+      "name": "test sofa",
+      "short_desc": "short description of test sofa",
+      "image": "products_images/promo-img2.jpg",
+      "description": "description of test sofa",
+      "price": "111.00",
+      "quantity": 5,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 10,
+    "fields": {
+      "category": 1,
+      "name": "cbv chair",
+      "short_desc": "short description of cbv chair",
+      "image": "products_images/product-4-sm.jpg",
+      "description": "description of cbv chair",
+      "price": "222.00",
+      "quantity": 15,
+      "is_active": true
+    }
+  },
+  {
+    "model": "mainapp.product",
+    "pk": 13,
+    "fields": {
+      "category": 6,
+      "name": "product in test category",
+      "short_desc": "description",
+      "image": "products_images/slider.jpg",
+      "description": "short description",
+      "price": "19.80",
+      "quantity": 22,
+      "is_active": true
+    }
+  }
+]
